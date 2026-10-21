@@ -787,8 +787,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `bd count --type <infra type>` now counts the type's ephemeral rows, from
   the same plane and with the same ephemeral narrowing as
   `bd list --type <infra type>`, instead of only its durable rows;
-  `--include-ephemeral` counts the durable rows as well. Every count route
-  reads the workspace's `types.infra` for a typed count (#6258).
+  `--include-ephemeral` counts the durable rows as well. An untyped count is
+  unchanged, so by default that type's `bd count --by-type` bucket still
+  counts only its durable rows: the bucket and `--type` now count different
+  rows, and only `--include-ephemeral` makes them agree, both then counting
+  both planes. Every count route reads the workspace's `types.infra` for a
+  typed count, so a count with `--type` (any type) now fails when that
+  configuration cannot be read (#6258).
 - An HTTP workspace whose server cannot be reached now says which step
   failed. A connect that is refused names the address and says nothing is
   listening; one that times out (a filtered port, a down host) names the
